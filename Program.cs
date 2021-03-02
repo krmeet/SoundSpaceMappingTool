@@ -1,4 +1,5 @@
 ﻿using System;
+using OpenTK;
 
 namespace SoundSpaceMappingTool
 {
@@ -6,7 +7,7 @@ namespace SoundSpaceMappingTool
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            
         }
     }
 }
