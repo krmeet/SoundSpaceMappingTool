@@ -9,24 +9,24 @@ namespace SoundSpaceMappingTool
     {
         static void Main(string[] args)
         {
-            VSyncMode vsync = VSyncMode.On;
+            VSyncMode vsync = VSyncMode.Off;
             if (args.Length != 0)
             {
                 for (int i = 0; i < args.Length; i++)
                 {
                     switch (args[i])
                     {
-                        case "--disable-vsync":
-                            vsync = VSyncMode.Off;
+                        case "--vsync":
+                            vsync = VSyncMode.On;
                             break;
                         default:
                             Console.WriteLine("Invalid arguments!");
-                            return;
+                            break;
                     }
                 }
             }
             try {
-                using (MainWindow w = new MainWindow(vsync)) {
+                using (MainWindow w = new MainWindow(800, 600, "Sound Space Mapping Tool", vsync)) {
                     w.Run();
                 }
             }

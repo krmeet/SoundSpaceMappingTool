@@ -8,15 +8,15 @@ namespace SoundSpaceMappingTool
 {
     public class MainWindow : GameWindow
     {
-        public MainWindow(VSyncMode vsync) : base(GameWindowSettings.Default, NativeWindowSettings.Default)
+        public MainWindow(int width, int height, string title, VSyncMode vsync) : base(GameWindowSettings.Default, NativeWindowSettings.Default)
         {
-            this.Title = "Sound Space Mapping Tool";
+            this.Title = title;
             this.VSync = vsync;
             this.RenderFrame += new Action<FrameEventArgs>(Render);
         }
         public void Render(FrameEventArgs args)
         {
-            GL.ClearColor(0,0,0,0);
+            GL.ClearColor(0,0,0,1);
         }
     }
 }
