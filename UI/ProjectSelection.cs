@@ -9,7 +9,12 @@ namespace SoundSpaceMappingTool
 		{
 			Name = "Project Selection";
 			Screen = this;
-			Frames.Add(new GuiFrame(new Vector4(0, 100, 0, 25), new Vector4(0, 0, 0, 0)));
+			var testFrame = new GuiFrame(new Vector4(0.5f, 0, 0, 0), new Vector4(0, 100, 0, 25));
+			Frames.Add(testFrame);
+		}
+		public override void Render(FrameEventArgs e)
+		{
+			base.Render(e);
 		}
 	}
 }

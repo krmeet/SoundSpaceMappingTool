@@ -36,23 +36,21 @@ namespace SoundSpaceMappingTool
 			GL.MatrixMode(MatrixMode.Projection);
 			var m = Matrix4.CreateOrthographicOffCenter(0, Width, Height, 0, 0, 1);
 			GL.LoadMatrix(ref m);
-			Screen.OnResize();
-			base.OnResize(e);
+			Screen?.OnResize();
+			OnRenderFrame(new FrameEventArgs());
 		}
 		protected override void OnRenderFrame(FrameEventArgs args)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 			GL.PushMatrix();
-
-			Screen.Render(args);
-
+			Screen?.Render(args);
 			GL.PopMatrix();
 			SwapBuffers();
 			base.OnRenderFrame(args);
 		}
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{
-			Title = $"Sound Space Mapping Tool - {Screen.Name}";
+			Title = $"Sound Space Mapping Tool - {Screen?.Name}";
 			base.OnUpdateFrame(e);
 		}
 	}
