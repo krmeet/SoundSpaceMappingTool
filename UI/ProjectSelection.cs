@@ -1,4 +1,5 @@
 using GUI;
+using OpenTK;
 namespace SoundSpaceMappingTool
 {
 	public class ProjectSelection : GuiScreen
@@ -8,6 +9,7 @@ namespace SoundSpaceMappingTool
 		{
 			Name = "Project Selection";
 			Screen = this;
+			Frames.Add(new GuiFrame(new Vector4(0, 100, 0, 25), new Vector4(0, 0, 0, 0)));
 		}
 	}
 }

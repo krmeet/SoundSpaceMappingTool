@@ -1,14 +1,26 @@
+using System.Collections.Generic;
 using OpenTK;
-using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 namespace GUI
 {
 	public class GuiScreen : GuiObject
 	{
 		public string Name { get; protected set; } = "Untitled";
-		public new void Render(FrameEventArgs e)
+		protected List<GuiFrame> Frames = new List<GuiFrame> { };
+		public override void Render(FrameEventArgs e)
 		{
+			foreach (GuiFrame frame in Frames)
+			{
+				frame.Render(e);
+			}
 			base.Render(e);
+		}
+		public override void OnResize()
+		{
+			foreach (GuiFrame frame in Frames)
+			{
+				frame.OnResize();
+			}
+			base.OnResize();
 		}
 	}
 }

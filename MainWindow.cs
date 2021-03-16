@@ -32,17 +32,22 @@ namespace SoundSpaceMappingTool
 		}
 		protected override void OnResize(EventArgs e)
 		{
-			GL.Viewport(0, 0, Width, Height);
+			GL.Viewport(ClientRectangle);
+			GL.MatrixMode(MatrixMode.Projection);
+			var m = Matrix4.CreateOrthographicOffCenter(0, Width, Height, 0, 0, 1);
+			GL.LoadMatrix(ref m);
 			Screen.OnResize();
 			base.OnResize(e);
 		}
 		protected override void OnRenderFrame(FrameEventArgs args)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
+			GL.PushMatrix();
 
 			Screen.Render(args);
 
-			Context.SwapBuffers();
+			GL.PopMatrix();
+			SwapBuffers();
 			base.OnRenderFrame(args);
 		}
 		protected override void OnUpdateFrame(FrameEventArgs e)
