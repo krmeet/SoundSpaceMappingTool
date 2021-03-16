@@ -25,10 +25,7 @@ namespace SoundSpaceMappingTool
 			}
 			try
 			{
-				using (MainWindow w = new MainWindow(800, 600, "Sound Space Mapping Tool", vsync))
-				{
-					w.Run();
-				}
+				new MainWindow(800, 600, "Sound Space Mapping Tool", vsync);
 			}
 			catch (Exception e)
 			{
