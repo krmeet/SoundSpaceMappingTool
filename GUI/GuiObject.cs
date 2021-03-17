@@ -5,12 +5,13 @@ namespace GUI
 {
 	public class GuiObject
 	{
-		public Vector2 AbsPosition { get; private set; }
-		public Vector2 AbsSize { get; private set; }
 		public Vector4 Position;
 		public Vector4 Size;
 		public GuiObject Parent;
-		protected RectangleF Rect;
+		public bool ClipDescendants = false;
+		public RectangleF Rect { get; protected set; }
+		public Vector2 AbsPosition { get; protected set; }
+		public Vector2 AbsSize { get; protected set; }
 		protected MainWindow Window;
 		public GuiObject()
 		{
@@ -21,14 +22,10 @@ namespace GUI
 			AbsSize = new Vector2();
 			Rect = new RectangleF();
 		}
-		public GuiObject(Vector4 position, Vector4 size)
+		public GuiObject(Vector4 position, Vector4 size) : this()
 		{
-			Window = MainWindow.Window;
 			Position = position;
 			Size = size;
-			AbsPosition = new Vector2();
-			AbsSize = new Vector2();
-			Rect = new RectangleF();
 			OnResize();
 		}
 		public virtual void Render(FrameEventArgs e)
