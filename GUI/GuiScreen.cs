@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using OpenTK;
+using OpenTK.Graphics;
+using OpenTK.Input;
+using System;
 namespace GUI
 {
 	public class GuiScreen : GuiObject
@@ -23,6 +26,53 @@ namespace GUI
 			}
 			base.Render(e);
 		}
+		public virtual void OnMouseMove(MouseMoveEventArgs e)
+		{
+			PointF posF = new PointF(e.Position.X, e.Position.Y);
+			foreach (GuiFrame frame in Children)
+			{
+				frame.OnMouseMove(e);
+				if (frame.Rect.Contains(posF))
+				{
+					if (!frame.MouseOver)
+					{
+						frame.OnMouseEnter(e);
+					}
+					frame.MouseOver = true;
+				}
+				else if (frame.MouseOver)
+				{
+					frame.MouseOver = false;
+					frame.OnMouseLeave(e);
+				}
+			}
+		}
+		public virtual void OnMouseDown(MouseButtonEventArgs e)
+		{
+			foreach (GuiFrame frame in Children)
+			{
+				if (frame.MouseOver)
+				{
+					frame.MouseDown = true;
+				}
+				frame.OnMouseDown(e);
+			}
+		}
+		public virtual void OnMouseUp(MouseButtonEventArgs e)
+		{
+			foreach (GuiFrame frame in Children)
+			{
+				if (frame.MouseOver)
+				{
+					if (frame.MouseDown)
+					{
+						frame.OnMouseClick(e);
+					}
+				}
+				frame.OnMouseUp(e);
+				frame.MouseDown = false;
+			}
+		}
 		public override void OnResize()
 		{
 			foreach (GuiFrame frame in Children)
@@ -30,6 +80,13 @@ namespace GUI
 				frame.OnResize();
 			}
 			base.OnResize();
+		}
+		public virtual void OnUnload()
+		{
+			foreach (GuiFrame frame in Children)
+			{
+				frame.OnUnload();
+			}
 		}
 	}
 }

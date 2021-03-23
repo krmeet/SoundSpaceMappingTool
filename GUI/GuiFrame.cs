@@ -1,15 +1,18 @@
 using OpenTK;
 using OpenTK.Graphics;
+using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 namespace GUI
 {
 	public class GuiFrame : GuiScreen
 	{
-		private bool OnScreen;
+		public string Image;
+		public bool OnScreen { get; protected set; }
 		public bool Visible = true;
 		public int ZIndex = 0;
 		public Color4 Colour = new Color4(255, 255, 255, 255);
-		public bool MouseOver { get; protected set; }
+		public bool MouseOver;
+		public bool MouseDown;
 		public GuiFrame() : base()
 		{
 			Size = new Vector4(0, 200, 0, 200);
@@ -35,16 +38,17 @@ namespace GUI
 					(int)(Parent.AbsSize.Y));
 				}
 				GL.Color4(Colour);
-				GLR.RenderRect(Rect, ZIndex);
+				if (Image != null) GLR.RenderImageRect(Rect, ZIndex, TextureManager.Get(Image));
+				else GLR.RenderRect(Rect, ZIndex);
 				base.Render(e);
 				if (Parent != null && Parent.ClipDescendants) GL.Disable(EnableCap.ScissorTest);
 			}
 		}
-		public virtual void OnMouseEnter()
+		public virtual void OnMouseEnter(MouseMoveEventArgs e)
 		{ }
-		public virtual void OnMouseLeave()
+		public virtual void OnMouseLeave(MouseMoveEventArgs e)
 		{ }
-		public virtual void OnMouseMove()
+		public virtual void OnMouseClick(MouseButtonEventArgs e)
 		{ }
 	}
 }

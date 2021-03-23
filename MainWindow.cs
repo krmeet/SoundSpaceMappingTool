@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using GUI;
+using OpenTK.Input;
 
 namespace SoundSpaceMappingTool
 {
@@ -28,6 +29,7 @@ namespace SoundSpaceMappingTool
 		{
 			Screen = ProjectSelection.Screen;
 			GL.ClearColor(new Color4(0.1f, 0.1f, 0.125f, 1f));
+			GL.BlendFunc(BlendingFactor.Src1Alpha, BlendingFactor.OneMinusSrcAlpha);
 			base.OnLoad(e);
 		}
 		protected override void OnResize(EventArgs e)
@@ -52,6 +54,26 @@ namespace SoundSpaceMappingTool
 		{
 			Title = $"Sound Space Mapping Tool - {Screen?.Name}";
 			base.OnUpdateFrame(e);
+		}
+		protected override void OnUnload(EventArgs e)
+		{
+			Screen?.OnUnload();
+			base.OnUnload(e);
+		}
+		protected override void OnMouseMove(MouseMoveEventArgs e)
+		{
+			Screen?.OnMouseMove(e);
+			base.OnMouseMove(e);
+		}
+		protected override void OnMouseDown(MouseButtonEventArgs e)
+		{
+			Screen?.OnMouseDown(e);
+			base.OnMouseDown(e);
+		}
+		protected override void OnMouseUp(MouseButtonEventArgs e)
+		{
+			Screen?.OnMouseUp(e);
+			base.OnMouseUp(e);
 		}
 	}
 }
