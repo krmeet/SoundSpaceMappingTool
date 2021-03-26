@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -5,6 +6,7 @@ using System.IO;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
+using SharpFont;
 using SoundSpaceMappingTool;
 namespace GUI
 {
@@ -127,6 +129,42 @@ namespace GUI
 				(int)TextureWrapMode.ClampToEdge);
 
 			return id;
+		}
+	}
+	public class FontRenderer : IDisposable
+	{
+		private int FontSize;
+		private Face FontFace;
+		private Library Lib;
+		public FontRenderer()
+		{
+			Lib = new Library();
+			SetFont("content/fonts/arial.ttf");
+		}
+		private void SetFont(Face face)
+		{
+			FontFace?.Dispose();
+			FontFace = face;
+			SetSize(FontSize);
+		}
+		public void SetFont(string path)
+		{
+			SetFont(new Face(Lib, path));
+		}
+		public void SetSize(int size)
+		{
+			FontSize = size;
+			FontFace?.SetCharSize(0, size, 0, 96);
+		}
+		public void Dispose()
+		{
+			Lib?.Dispose();
+			FontFace?.Dispose();
+			GC.SuppressFinalize(this);
+		}
+		~FontRenderer()
+		{
+			Console.WriteLine("FontRenderer leaked");
 		}
 	}
 }

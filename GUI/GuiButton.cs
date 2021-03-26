@@ -8,11 +8,14 @@ namespace GUI
 	public class GuiButton : GuiFrame
 	{
 		public string Text;
+		private FontRenderer fr;
 		public GuiButton() : base()
 		{
+			fr = new FontRenderer();
 		}
 		public GuiButton(Vector4 p, Vector4 s) : base(p, s)
 		{
+			fr = new FontRenderer();
 		}
 		private double Brightness = 0;
 		public override void Render(FrameEventArgs e)
@@ -46,6 +49,7 @@ namespace GUI
 		}
 		public override void OnUnload()
 		{
+			fr?.Dispose();
 			base.OnUnload();
 		}
 	}

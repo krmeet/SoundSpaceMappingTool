@@ -6,7 +6,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="SharpFont.NetStandard" Version="1.0.2" />
 		<PackageReference Include="OpenTK.NetStandard" Version="1.0.5.32" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="$(SolutionDir)content\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
 	</ItemGroup>
 
 </Project>
