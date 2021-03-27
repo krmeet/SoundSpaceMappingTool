@@ -45,13 +45,16 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="OpenTK">
-      <HintPath>packages\OpenTK.3.0.0\lib\net20\OpenTK.dll</HintPath>
+      <HintPath>packages\OpenTK.3.0.1\lib\net20\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="SharpFont">
       <HintPath>packages\SharpFont.4.0.1\lib\net45\SharpFont.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="QuickFont">
+      <HintPath>packages\QuickFont.Desktop.4.5.7053.25687\lib\net45\QuickFont.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
   	<Content Include="content\**">

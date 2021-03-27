@@ -8,13 +8,7 @@ namespace GUI
 {
 	public class GuiButton : GuiFrame
 	{
-		public string Text {
-            get { return fr?.CurrentString; }
-            set
-            {
-                fr?.SetString(value);
-            }
-        }
+        public string Text;
         public string Font
         {
             get { return fr?.Font; }
@@ -53,6 +47,7 @@ namespace GUI
 				GL.Color4(brightener);
 				GLR.RenderRect(newRect, ZIndex);
 			}
+            fr.RenderString(Text, new Vector3(0,0,ZIndex));
 		}
 		public Action Mouse1Clicked;
 		public Action Mouse2Clicked;

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = System.Drawing.Imaging.PixelFormat;
-using SharpFont;
+using QuickFont;
 using SoundSpaceMappingTool;
 namespace GUI
 {
@@ -34,13 +35,9 @@ namespace GUI
 			GL.Scale(width, height, 1);
 			GL.Begin(PrimitiveType.Quads);
 			GL.TexCoord2(0, 0);
-			GL.Vertex2(0, 0);
 			GL.TexCoord2(0, 1);
-			GL.Vertex2(0, 1);
 			GL.TexCoord2(1, 1);
-			GL.Vertex2(1, 1);
 			GL.TexCoord2(1, 0);
-			GL.Vertex2(1, 0);
 			GL.End();
 			GL.Scale(1f / width, 1f / height, 1);
 			GL.Translate(-x, -y, -z);
@@ -153,61 +150,30 @@ namespace GUI
 	}
 	public class FontRenderer : IDisposable
 	{
-        public int Texture { get; private set; }
 		private int FontSize;
-        private Face FontFace;
-		private Library Lib;
-        public string CurrentString { get; private set; }
+        private QFont FontFace;
+        private QFontDrawing Drawing;
         public string Font { get; private set; }
         public FontRenderer()
 		{
-            Texture = GL.GenTexture();
-			Lib = new Library();
-			SetFont("content/fonts/UbuntuMono.ttf");
+            Drawing = new QFontDrawing();
+            Drawing.DrawingPrimitives.Clear();
+			SetFont($"{Directory.GetCurrentDirectory()}/content/fonts/UbuntuMono.ttf");
             SetSize(12);
 		}
-		public int GetStringLength(string str)
+        public int GetStringLength(string str)
 		{
 			int length = 0;
-			for (int i = 0; i < str.Length; i++)
-			{
-				char chr = str[i];
-				uint glyph = FontFace.GetCharIndex(chr);
-				FontFace.LoadGlyph(glyph, LoadFlags.Default, LoadTarget.Normal);
-                int w = (int)FontFace.Glyph.Metrics.Width;
-                if (w == 0)
-                {
-                    w = (int)FontFace.Glyph.Metrics.HorizontalAdvance;
-                }
-                length += w;
-			}
+            length = (int)FontFace.Measure(str, new SizeF(0, FontSize), QFontAlignment.Left).Width;
 			return length;
 		}
-        public void SetString(string str)
+        public void RenderString(string str, Vector3 pos)
         {
-            if (str == CurrentString)
-            {
-                return;
-            }
-            CurrentString = str;
-            int length = GetStringLength(str);
-            Bitmap bmp = new Bitmap(length, FontSize);
-            Graphics g = Graphics.FromImage(bmp);
-            Point p = new Point(0, 0);
-            for (int i = 0; i < str.Length; i++)
-            {
-                char chr = str[i];
-                uint glyph = FontFace.GetCharIndex(chr);
-                FontFace.LoadGlyph(glyph, LoadFlags.Default, LoadTarget.Normal);
-                FontFace.Glyph.RenderGlyph(RenderMode.Normal);
-                FTBitmap ftbmp = FontFace.Glyph.Bitmap;
-                g.DrawImageUnscaled(ftbmp.ToGdipBitmap(), p);
-                p.Offset((int)FontFace.Glyph.Metrics.HorizontalAdvance, 0);
-            }
-            bmp = new Bitmap(length, FontSize, g);
-            TextureManager.SetTexture(Texture, bmp);
+            Drawing.DrawingPrimitives.Clear();
+            Drawing.Print(FontFace, str, pos, QFontAlignment.Left, new QFontRenderOptions());
+            Drawing.Draw();
         }
-        private void SetFont(Face face)
+        private void SetFont(QFont face)
 		{
 			FontFace?.Dispose();
 			FontFace = face;
@@ -216,16 +182,15 @@ namespace GUI
 		public void SetFont(string path)
 		{
             Font = path;
-			SetFont(new Face(Lib, path));
+            SetFont(new QFont(path, new QuickFont.Configuration.QFontBuilderConfiguration()));
 		}
 		public void SetSize(int size)
 		{
 			FontSize = size;
-			FontFace?.SetCharSize(0, size, 0, 96);
 		}
 		public void Dispose()
 		{
-			Lib?.Dispose();
+            Drawing?.Dispose();
 			FontFace?.Dispose();
 			GC.SuppressFinalize(this);
 		}

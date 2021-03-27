@@ -29,6 +29,7 @@ namespace SoundSpaceMappingTool
 		{
 			Screen = ProjectSelection.Screen;
 			GL.ClearColor(new Color4(0.1f, 0.1f, 0.125f, 1f));
+            GL.Enable(EnableCap.AlphaTest);
 			GL.BlendFunc(BlendingFactor.Src1Alpha, BlendingFactor.OneMinusSrcAlpha);
 			base.OnLoad(e);
 		}
@@ -41,14 +42,14 @@ namespace SoundSpaceMappingTool
 			Screen?.OnResize();
 			OnRenderFrame(new FrameEventArgs());
 		}
-		protected override void OnRenderFrame(FrameEventArgs args)
+		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
 			GL.PushMatrix();
-			Screen?.Render(args);
+			Screen?.Render(e);
 			GL.PopMatrix();
 			SwapBuffers();
-			base.OnRenderFrame(args);
+			base.OnRenderFrame(e);
 		}
 		protected override void OnUpdateFrame(FrameEventArgs e)
 		{

@@ -13,8 +13,6 @@ namespace SoundSpaceMappingTool
 			Name = "Project Selection";
 			Screen = this;
             fontRenderer = new FontRenderer();
-            Console.WriteLine(fontRenderer.GetStringLength("abc").ToString());
-            Console.WriteLine(fontRenderer.GetStringLength("abc ").ToString());
             GuiFrame testFrame = new GuiFrame(new Vector4(0.5f, 0, 0, 10), new Vector4(0, 200, 0, 200))
             {
                 Colour = Color4.Gray
