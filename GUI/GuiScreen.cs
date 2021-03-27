@@ -1,8 +1,9 @@
+using System;
+using System.Drawing;
 using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Input;
-using System;
 namespace GUI
 {
 	public class GuiScreen : GuiObject

@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using SoundSpaceMappingTool;
 using OpenTK;
 namespace GUI
@@ -26,7 +27,6 @@ namespace GUI
 		{
 			Position = position;
 			Size = size;
-			OnResize();
 		}
 		public virtual void Render(FrameEventArgs e)
 		{ }

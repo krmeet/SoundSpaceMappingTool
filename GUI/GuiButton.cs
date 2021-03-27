@@ -3,6 +3,7 @@ using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using System;
+using System.Drawing;
 namespace GUI
 {
 	public class GuiButton : GuiFrame
@@ -33,7 +34,7 @@ namespace GUI
 			base.Render(e);
 			if (Visible && OnScreen)
 			{
-				var brightener = GLR.CombineColor4s(Colour, new Color4((float)Brightness * 0.1f, (float)Brightness * 0.1f, (float)Brightness * 0.1f, 1f));
+				var brightener = GLR.CombineColor4s(Colour, new Color4(Colour.R+(float)Brightness * 0.4f, Colour.G+(float)Brightness * 0.4f, Colour.B+(float)Brightness * 0.4f, 1f));
 				var newRect = new RectangleF(Rect.X + 2, Rect.Y + 2, Rect.Width - 4, Rect.Height - 4);
 				GL.Color4(brightener);
 				GLR.RenderRect(newRect, ZIndex);

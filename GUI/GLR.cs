@@ -45,11 +45,11 @@ namespace GUI
 			GL.Scale(1f / width, 1f / height, 1);
 			GL.Translate(-x, -y, -z);
 		}
-		public static void RenderRect(OpenTK.RectangleF rect, int z)
+		public static void RenderRect(RectangleF rect, int z)
 		{
 			RenderQuad(rect.X, rect.Y, rect.Width, rect.Height, z);
 		}
-		public static void RenderImageRect(OpenTK.RectangleF rect, int z, int texture)
+		public static void RenderImageRect(RectangleF rect, int z, int texture)
 		{
 			RenderImage(rect.X, rect.Y, rect.Width, rect.Height, z, texture);
 		}
@@ -139,7 +139,19 @@ namespace GUI
 		public FontRenderer()
 		{
 			Lib = new Library();
-			SetFont("content/fonts/arial.ttf");
+			SetFont("content/fonts/UbuntuMono.ttf");
+		}
+		public int GetStringLength(string str)
+		{
+			int length = 0;
+			for (int i = 0; i < str.Length; i++)
+			{
+				char chr = str[i];
+				uint glyph = FontFace.GetCharIndex(chr);
+				FontFace.LoadGlyph(glyph, LoadFlags.Default, LoadTarget.Normal);
+				length += (int)FontFace.Glyph.Metrics.Width;
+			}
+			return length;
 		}
 		private void SetFont(Face face)
 		{

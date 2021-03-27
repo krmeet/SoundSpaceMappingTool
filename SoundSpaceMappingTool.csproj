@@ -1,18 +1,65 @@
-<Project Sdk="Microsoft.NET.Sdk">
-
-	<PropertyGroup>
-		<OutputType>Exe</OutputType>
-		<TargetFramework>net5.0</TargetFramework>
-	</PropertyGroup>
-
-	<ItemGroup>
-		<PackageReference Include="SharpFont.NetStandard" Version="1.0.2" />
-		<PackageReference Include="OpenTK.NetStandard" Version="1.0.5.32" />
-	</ItemGroup>
-	<ItemGroup>
-		<Content Include="$(SolutionDir)content\**">
-			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-		</Content>
-	</ItemGroup>
-
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\SharpFont.4.0.1\build\SharpFont.props" Condition="Exists('packages\SharpFont.4.0.1\build\SharpFont.props')" />
+  <Import Project="packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props" Condition="Exists('packages\SharpFont.Dependencies.2.6\build\SharpFont.Dependencies.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{AFD673F9-1969-4F01-BA71-263A04D619BB}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>SoundSpaceMappingTool</RootNamespace>
+    <AssemblyName>SoundSpaceMappingTool</AssemblyName>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <StartupObject>SoundSpaceMappingTool.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="MainWindow.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="GUI\GuiButton.cs" />
+    <Compile Include="GUI\GuiFrame.cs" />
+    <Compile Include="GUI\GLR.cs" />
+    <Compile Include="GUI\GuiObject.cs" />
+    <Compile Include="GUI\GuiScreen.cs" />
+    <Compile Include="UI\ProjectSelection.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="OpenTK.dll.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="OpenTK">
+      <HintPath>packages\OpenTK.3.0.0\lib\net20\OpenTK.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpFont">
+      <HintPath>packages\SharpFont.4.0.1\lib\net45\SharpFont.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickFont">
+      <HintPath>packages\QuickFont.Desktop.4.5.7053.25687\lib\net45\QuickFont.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+  	<Content Include="content\**">
+  		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  	</Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
