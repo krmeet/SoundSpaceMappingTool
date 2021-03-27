@@ -8,8 +8,22 @@ namespace GUI
 {
 	public class GuiButton : GuiFrame
 	{
-		public string Text;
-		private FontRenderer fr;
+		public string Text {
+            get { return fr?.CurrentString; }
+            set
+            {
+                fr?.SetString(value);
+            }
+        }
+        public string Font
+        {
+            get { return fr?.Font; }
+            set
+            {
+                fr?.SetFont(value);
+            }
+        }
+        private FontRenderer fr;
 		public GuiButton() : base()
 		{
 			fr = new FontRenderer();

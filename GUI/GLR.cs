@@ -153,11 +153,13 @@ namespace GUI
 	}
 	public class FontRenderer : IDisposable
 	{
-        private int Texture;
+        public int Texture { get; private set; }
 		private int FontSize;
-		private Face FontFace;
+        private Face FontFace;
 		private Library Lib;
-		public FontRenderer()
+        public string CurrentString { get; private set; }
+        public string Font { get; private set; }
+        public FontRenderer()
 		{
             Texture = GL.GenTexture();
 			Lib = new Library();
@@ -181,7 +183,31 @@ namespace GUI
 			}
 			return length;
 		}
-		private void SetFont(Face face)
+        public void SetString(string str)
+        {
+            if (str == CurrentString)
+            {
+                return;
+            }
+            CurrentString = str;
+            int length = GetStringLength(str);
+            Bitmap bmp = new Bitmap(length, FontSize);
+            Graphics g = Graphics.FromImage(bmp);
+            Point p = new Point(0, 0);
+            for (int i = 0; i < str.Length; i++)
+            {
+                char chr = str[i];
+                uint glyph = FontFace.GetCharIndex(chr);
+                FontFace.LoadGlyph(glyph, LoadFlags.Default, LoadTarget.Normal);
+                FontFace.Glyph.RenderGlyph(RenderMode.Normal);
+                FTBitmap ftbmp = FontFace.Glyph.Bitmap;
+                g.DrawImageUnscaled(ftbmp.ToGdipBitmap(), p);
+                p.Offset((int)FontFace.Glyph.Metrics.HorizontalAdvance, 0);
+            }
+            bmp = new Bitmap(length, FontSize, g);
+            TextureManager.SetTexture(Texture, bmp);
+        }
+        private void SetFont(Face face)
 		{
 			FontFace?.Dispose();
 			FontFace = face;
@@ -189,6 +215,7 @@ namespace GUI
 		}
 		public void SetFont(string path)
 		{
+            Font = path;
 			SetFont(new Face(Lib, path));
 		}
 		public void SetSize(int size)
