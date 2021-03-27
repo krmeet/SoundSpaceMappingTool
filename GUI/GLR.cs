@@ -103,9 +103,29 @@ namespace GUI
 			Textures.Add(textureName, id);
 
 			return id;
-		}
+        }
+        public static void SetTexture(int id, Bitmap img, bool smooth = false)
+        {
+            GL.BindTexture(TextureTarget.Texture2D, id);
 
-		private static int LoadTexture(Bitmap img, bool smooth = false)
+            BitmapData data = img.LockBits(new Rectangle(0, 0, img.Width, img.Height),
+                ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
+                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+
+            img.UnlockBits(data);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
+                (int)(smooth ? TextureMinFilter.Linear : TextureMinFilter.Nearest));
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
+                (int)(smooth ? TextureMagFilter.Linear : TextureMagFilter.Nearest));
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
+                (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,
+                (int)TextureWrapMode.ClampToEdge);
+        }
+        private static int LoadTexture(Bitmap img, bool smooth = false)
 		{
 			var id = GL.GenTexture();
 
@@ -133,11 +153,13 @@ namespace GUI
 	}
 	public class FontRenderer : IDisposable
 	{
+        private int Texture;
 		private int FontSize;
 		private Face FontFace;
 		private Library Lib;
 		public FontRenderer()
 		{
+            Texture = GL.GenTexture();
 			Lib = new Library();
 			SetFont("content/fonts/UbuntuMono.ttf");
             SetSize(12);
@@ -150,7 +172,12 @@ namespace GUI
 				char chr = str[i];
 				uint glyph = FontFace.GetCharIndex(chr);
 				FontFace.LoadGlyph(glyph, LoadFlags.Default, LoadTarget.Normal);
-				length += (int)FontFace.Glyph.Metrics.Width;
+                int w = (int)FontFace.Glyph.Metrics.Width;
+                if (w == 0)
+                {
+                    w = (int)FontFace.Glyph.Metrics.HorizontalAdvance;
+                }
+                length += w;
 			}
 			return length;
 		}
