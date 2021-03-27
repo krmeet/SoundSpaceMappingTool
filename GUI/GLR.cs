@@ -140,6 +140,7 @@ namespace GUI
 		{
 			Lib = new Library();
 			SetFont("content/fonts/UbuntuMono.ttf");
+            SetSize(12);
 		}
 		public int GetStringLength(string str)
 		{
