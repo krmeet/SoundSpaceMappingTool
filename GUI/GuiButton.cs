@@ -24,35 +24,39 @@ namespace GUI
 		}
 		public GuiButton(Vector4 p, Vector4 s) : base(p, s)
 		{
-			fr = new FontRenderer();
+            fr = new FontRenderer();
 		}
-		private double Brightness = 0;
+		private float Brightness = 0;
 		public override void Render(FrameEventArgs e)
 		{
 			if (MouseOver)
 			{
-				if (Brightness < 1) Brightness += e.Time / 0.25;
+				if (Brightness < 1) Brightness += (float)(e.Time / 0.25);
 				if (Brightness > 1) Brightness = 1;
 			}
 			else
 			{
-				if (Brightness > 0) Brightness -= e.Time / 2;
+				if (Brightness > 0) Brightness -= (float)(e.Time / 2);
 				if (Brightness < 0) Brightness = 0;
 			}
 			base.Render(e);
 			if (Visible && OnScreen)
 			{
-				var brightener = GLR.CombineColor4s(Colour, new Color4(Colour.R+(float)Brightness * 0.4f, Colour.G+(float)Brightness * 0.4f, Colour.B+(float)Brightness * 0.4f, 1f));
+                var diffR = (1f - Colour.R)*0.75f;
+                var diffG = (1f - Colour.G)*0.75f;
+                var diffB = (1f - Colour.B)*0.75f;
+                var brightener = new Color4(1f, 1f, 1f, Brightness*0.4f);
 				var newRect = new RectangleF(Rect.X + 2, Rect.Y + 2, Rect.Width - 4, Rect.Height - 4);
 				GL.Color4(brightener);
 				GLR.RenderRect(newRect, ZIndex);
 			}
-            fr.RenderString(Text, new Vector3(0,0,ZIndex));
+            GL.Color4(Color4.Transparent);
+            fr?.RenderString(Text, new Point((int)Rect.X, (int)Rect.Y));
 		}
 		public Action Mouse1Clicked;
 		public Action Mouse2Clicked;
 		public override void OnMouseClick(MouseButtonEventArgs e)
-		{
+        {
 			if (e.Button == MouseButton.Left) Mouse1Clicked.Invoke();
 			if (e.Button == MouseButton.Right) Mouse2Clicked.Invoke();
 			base.OnMouseClick(e);

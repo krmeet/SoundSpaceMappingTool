@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
@@ -27,15 +28,29 @@ namespace SoundSpaceMappingTool
 		}
 		protected override void OnLoad(EventArgs e)
 		{
-			Screen = ProjectSelection.Screen;
+            GL.Enable(EnableCap.Blend);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
+            GL.Hint(HintTarget.LineSmoothHint, HintMode.Nicest);
+            GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
+
+            GL.Enable(EnableCap.Texture2D);
+            GL.ActiveTexture(TextureUnit.Texture0);
+
+            Screen = ProjectSelection.Screen;
 			GL.ClearColor(new Color4(0.1f, 0.1f, 0.125f, 1f));
-            GL.Enable(EnableCap.AlphaTest);
-			GL.BlendFunc(BlendingFactor.Src1Alpha, BlendingFactor.OneMinusSrcAlpha);
-			base.OnLoad(e);
 		}
 		protected override void OnResize(EventArgs e)
 		{
-			GL.Viewport(ClientRectangle);
+            if (ClientSize.Width < 800)
+            {
+                ClientSize = new Size(800, ClientSize.Height);
+            }
+            if (ClientSize.Height < 600)
+            {
+                ClientSize = new Size(ClientSize.Width, 600);
+            }
+            GL.Viewport(ClientRectangle);
 			GL.MatrixMode(MatrixMode.Projection);
 			var m = Matrix4.CreateOrthographicOffCenter(0, Width, Height, 0, 0, 1);
 			GL.LoadMatrix(ref m);
@@ -45,6 +60,7 @@ namespace SoundSpaceMappingTool
 		protected override void OnRenderFrame(FrameEventArgs e)
 		{
 			GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
 			GL.PushMatrix();
 			Screen?.Render(e);
 			GL.PopMatrix();
