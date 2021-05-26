@@ -1,5 +1,6 @@
 package mapEditor;
 
+import java.awt.*;
 import javax.swing.*;
 import mapEditor.BaseUI.*;
 

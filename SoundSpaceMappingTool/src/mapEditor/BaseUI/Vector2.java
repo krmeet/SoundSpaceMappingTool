@@ -9,30 +9,30 @@ public class Vector2 {
 		this(0,0);
 	}
 	public Vector2(float x, float y) {
-		this.X = x;
-		this.Y = y;
+		X = x;
+		Y = y;
 	}
 	
 	public float Magnitude() {
-		return (float)Math.hypot((double)this.X, (double)this.Y);
+		return (float)Math.hypot((double)X, (double)Y);
 	}
 	public float Dot(Vector2 b) {
-		return (this.X * b.X) + (this.Y * b.Y); 
+		return (X * b.X) + (Y * b.Y); 
 	}
 	public Vector2 Normalise() {
-		return this.Divide(this.Magnitude());
+		return Divide(Magnitude());
 	}
 	public Vector2 Add(Vector2 b) {
-		return new Vector2(this.X+b.X,this.Y+b.Y);
+		return new Vector2(X+b.X,Y+b.Y);
 	}
 	public Vector2 Subtract(Vector2 b) {
-		return new Vector2(this.X-b.X,this.Y-b.Y);
+		return new Vector2(X-b.X,Y-b.Y);
 	}
 	public Vector2 Divide(float b) {
-		return new Vector2(this.X/b,this.Y/b);
+		return new Vector2(X/b,Y/b);
 	}
 	public Vector2 Multiply(float b) {
-		return new Vector2(this.X*b,this.Y*b);
+		return new Vector2(X*b,Y*b);
 	}
 
 }
