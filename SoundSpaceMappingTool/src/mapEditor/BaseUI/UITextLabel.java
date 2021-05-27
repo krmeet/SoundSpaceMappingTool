@@ -15,8 +15,8 @@ public class UITextLabel extends UIBase {
 		g.setFont(TextFont);
 		g.setColor(TextColor);
 		g.drawString(Text,
-				(float)(_position.X+(_size.X/2)-(bounds.getWidth()/2)),
-				(float)(_position.Y+(_size.Y/2)+(bounds.getHeight()/2))
+				(float)(AbsolutePosition.X+(AbsoluteSize.X/2)-(bounds.getWidth()/2)),
+				(float)(AbsolutePosition.Y+(AbsoluteSize.Y/2)+(bounds.getHeight()/2))
 		);
 	}
 	

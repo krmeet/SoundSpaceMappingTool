@@ -1,6 +1,8 @@
 package mapEditor;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+
 import javax.swing.*;
 import mapEditor.BaseUI.*;
 
@@ -10,18 +12,22 @@ public class Window extends JFrame {
 
 	public Window(int W, int H) {
 		super();
-		this.setTitle("Sound Space Mapping Tool");
-		this.setSize(W, H);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
+		setTitle("Sound Space Mapping Tool");
+		setSize(W, H);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public void setPanel(UIPanel panel) {
 		if (currentPanel != null) {
-			this.remove(currentPanel);
+			remove(currentPanel);
 		}
 		currentPanel = panel;
-		this.add(currentPanel);
+		add(currentPanel);
+		currentPanel.repaint();
+		repaint();
+		if (!isVisible()) {
+			setVisible(true);
+		}
 	}
 	
 }
